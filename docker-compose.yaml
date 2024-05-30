@@ -1,0 +1,38 @@
+version: '3.7'
+services:
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aszende-php
+    networks:
+      - aszende-net
+    command: php -S 0.0.0.0:8080 -t public
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/app
+###> doctrine/doctrine-bundle ###
+  database:
+    image: postgres:${POSTGRES_VERSION:-13}-alpine
+    container_name: aszende-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-app}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
+      POSTGRES_USER: ${POSTGRES_USER:-symfony}
+    volumes:
+      - aszende-data:/var/lib/postgresql/data:rw
+    ports:
+      - "5432:5432"
+    networks:
+      - aszende-net
+volumes:
+  aszende-data:
+
+networks:
+  aszende-net:
+    name: aszende-net
+    driver: bridge
+

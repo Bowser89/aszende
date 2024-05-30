@@ -1,0 +1,17 @@
+includes:
+    - phpstan-baseline.neon
+parameters:
+    reportUnmatchedIgnoredErrors: true
+    treatPhpDocTypesAsCertain: false
+    parallel:
+        maximumNumberOfProcesses: 2
+    level: 8
+    ignoreErrors:
+        - '#Dynamic call to static method PHPUnit#'
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+    bootstrapFiles:
+        - vendor/autoload.php
+    paths:
+        - src
+        - tests

@@ -1,0 +1,25 @@
+parameters:
+    api.external_url: '%env(JSONPLACEHOLDER_API_URL)%'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+
+    App\:
+        resource: '../src/{Controller,Command}'
+
+    App\Api\JsonUserApiClient:
+        arguments:
+            $client: '@http_client'
+            $apiUrl: '%api.external_url%'
+            $logger: '@logger'
+
+    App\Validator\UserDataValidator:
+    App\Mapper\UserDataMapper:
+
+    App\Service\UserFetcher:
+        arguments:
+            $apiClient: '@App\Api\JsonUserApiClient'
+            $validator: '@App\Validator\UserDataValidator'
